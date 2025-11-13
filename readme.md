@@ -8,7 +8,7 @@ A solução consiste em uma API RESTful em Java Spring Boot, dockerizada e integ
 
 | Nome Completo | RM |
 | :--- | :--- |
-| Lucas de Alencar Pereira | 551720 |
+| Lucas de Alencar Pereira |551720|
 
 ## II. Descrição do Tema e API
 
