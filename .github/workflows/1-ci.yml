@@ -1,0 +1,35 @@
+name: 1. Continuous Integration (CI)
+
+on:
+  push:
+    branches:
+      - develop
+      - 'feature/**'
+      - release
+      - hotfix
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build da Aplicação (Maven)
+        run: mvn package -DskipTests
+
+      - name: Executar Testes Unitários
+        run: mvn test
+
+      - name: Build da Imagem Docker (Verificação)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          push: false

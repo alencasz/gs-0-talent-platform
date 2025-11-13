@@ -1,0 +1,40 @@
+name: 3. Versioning (Release)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+
+      - name: Configurar GIT
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+      - name: Gerar nova Tag (vX.X.X)
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_branch: main
+          tag_prefix: v
+
+      - name: Criar Release no GitHub
+        uses: softprops/action-gh-release@v1
+        if: ${{ steps.tag_version.outputs.new_tag != '' }}
+        with:
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          generate_release_notes: true
